@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\IngredientStockAlertJob;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -74,9 +75,10 @@ class OrderService
                 throw new \Exception('Insufficient stock for product: ' . $product->name);
             }
             $ingredient->current_stock -= $totalAmount;
-            if ($ingredient->current_stock <= ($ingredient->integer / 2) && !$ingredient->merchant_notified) {
+
+            if ($ingredient->current_stock <= ($ingredient->initial_stock / 2) && !$ingredient->merchant_notified) {
                 $ingredient->merchant_notified = 1;
-                // TODO: Notify merchant that the stock is about to end.
+                dispatch(new IngredientStockAlertJob($ingredient));
             }
 
             $ingredient->save();
