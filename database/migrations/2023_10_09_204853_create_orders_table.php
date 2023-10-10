@@ -19,6 +19,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->decimal('total', 10, 2)->nullable();
+
             $table->timestamps();
         });
     }

@@ -30,6 +30,12 @@ class OrderService
             $this->createOrderProduct($order, $product, $productData['quantity']);
         }
 
+        $order->total = $order->products->map(function ($product) {
+            return $product->pivot->subtotal;
+        })->sum();
+
+        $order->save();
+
         return $order;
     }
 
