@@ -20,7 +20,6 @@ class OrderResource extends JsonResource
             'user_id' => $this->user_id,
             'total' => $this->total,
             'products' => OrderProductResource::collection($this->products),
-            'created_at' => $this->created_at
         ];
     }
 }
